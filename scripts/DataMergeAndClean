@@ -4,7 +4,6 @@ import pandas as pd
 files = ['Crime_Incidents_in_2024.csv', 'Crime_Incidents_in_2025.csv', 'Crime_Incidents_in_2026.csv']
 
 #Reading files and forcing CCN to string so the merge doesn't break
-#This step prevents the 'Can't combine double and character' issue
 dfs = [pd.read_csv(f, dtype={'CCN': str}) for f in files]
 
 #Stacking all years into a single table
@@ -21,9 +20,9 @@ dc_crime_data['hour'] = dc_crime_data['START_DATE'].dt.hour
 #This directly supports the seasonality hypothesis
 dc_crime_data['is_summer'] = dc_crime_data['month'].isin([6, 7, 8]).map({True: 'Summer', False: 'Non-Summer'})
 
-#Printing the final results for verification
+
 print(f"Total incidents merged: {len(dc_crime_data)}")
 print(dc_crime_data[['START_DATE', 'OFFENSE', 'month', 'hour', 'is_summer']].head())
 
-#Saving the combined dataset for the modeling phase
+
 #dc_crime_data.to_csv('DC_Crime_Merged_2024_2026.csv', index=False)
