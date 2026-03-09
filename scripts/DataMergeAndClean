@@ -11,11 +11,11 @@ dfs = [pd.read_csv(f, dtype={'CCN': str}) for f in files]
 dc_crime_data = pd.concat(dfs, ignore_index=True)
 
 #Converting date strings into datetime objects for time-series analysis
-dc_crime_data['REPORT_DAT'] = pd.to_datetime(dc_crime_data['REPORT_DAT'])
+dc_crime_data['START_DATE'] = pd.to_datetime(dc_crime_data['START_DATE'])
 
 #Extracting time components to study daily and monthly patterns
-dc_crime_data['month'] = dc_crime_data['REPORT_DAT'].dt.month
-dc_crime_data['hour'] = dc_crime_data['REPORT_DAT'].dt.hour
+dc_crime_data['month'] = dc_crime_data['START_DATE'].dt.month
+dc_crime_data['hour'] = dc_crime_data['START_DATE'].dt.hour
 
 #Flagging records that fall within the summer season (June, July, August)
 #This directly supports the seasonality hypothesis
@@ -23,7 +23,7 @@ dc_crime_data['is_summer'] = dc_crime_data['month'].isin([6, 7, 8]).map({True: '
 
 #Printing the final results for verification
 print(f"Total incidents merged: {len(dc_crime_data)}")
-print(dc_crime_data[['REPORT_DAT', 'OFFENSE', 'month', 'hour', 'is_summer']].head())
+print(dc_crime_data[['START_DATE', 'OFFENSE', 'month', 'hour', 'is_summer']].head())
 
 #Saving the combined dataset for the modeling phase
 #dc_crime_data.to_csv('DC_Crime_Merged_2024_2026.csv', index=False)
